@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "About Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="premium-title">About SongCart</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="premium-card p-4 mb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="text-center">
+                        <i class="fas fa-headphones-alt mb-3" style="font-size: 4rem; background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;"></i>
+                        <h4 class="fw-bold">Your Music Destination</h4>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <p class="mb-3 fs-5">
+                        Welcome to <span style="color: var(--accent); font-weight: bold;">SongCart</span>, your one-stop destination to stream, discover, and purchase your favorite songs. Whether you're into pop, rock, jazz, or indie, we've got a vast selection to match every mood.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="premium-card h-100 p-0">
+            <div class="premium-card-header">
+                <i class="fas fa-bullseye me-2"></i> Our Mission
+            </div>
+            <div class="p-4">
+                <p class="text-secondary">
+                    Our mission is to make music <span style="color: var(--secondary); font-weight: bold;">accessible, enjoyable, and personal</span>. You can create wishlists, leave feedback, manage your purchases, and explore curated tracks by genre or artist.
+                </p>
+                <div class="d-flex justify-content-center mt-4">
+                    <i class="fas fa-music" style="font-size: 2.5rem; color: var(--primary);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="premium-card h-100 p-0">
+            <div class="premium-card-header">
+                <i class="fas fa-stars me-2"></i> Our Promise
+            </div>
+            <div class="p-4">
+                <p class="text-secondary">
+                    We are constantly adding the latest tracks and trending hits to keep you in tune with the music world. The platform is designed to be <span style="color: var(--secondary); font-weight: bold;">intuitive, modern, and user-friendly</span> — so all you need to do is press play and vibe.
+                </p>
+                <div class="d-flex justify-content-center mt-4">
+                    <i class="fas fa-compact-disc" style="font-size: 2.5rem; color: var(--primary);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        <div class="premium-card p-4" style="background: linear-gradient(45deg, rgba(138, 43, 226, 0.2), rgba(255, 107, 107, 0.2));">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h4 class="fw-bold mb-3">Join our music community today</h4>
+                    <p class="text-secondary mb-0">
+                        Experience premium quality music and discover new artists and songs that match your unique taste.
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="@Url.Action("BrowseSongsByGenre", "User")" class="btn-premium" style="text-decoration: none;">
+                        <i class="fas fa-search me-2"></i> Browse Songs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="premium-card p-0 overflow-hidden">
+            <div class="row g-0">
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="w-100 p-4 text-center" style="background-color: rgba(255, 255, 255, 0.03);">
+                        <i class="fas fa-globe mb-3" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h5 class="fw-semibold">Wide Selection</h5>
+                        <p class="text-secondary mb-0">Thousands of songs across all genres</p>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="w-100 p-4 text-center" style="background-color: rgba(255, 255, 255, 0.05);">
+                        <i class="fas fa-bolt mb-3" style="font-size: 2.5rem; color: var(--secondary);"></i>
+                        <h5 class="fw-semibold">Instant Access</h5>
+                        <p class="text-secondary mb-0">Stream and download immediately</p>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="w-100 p-4 text-center" style="background-color: rgba(255, 255, 255, 0.03);">
+                        <i class="fas fa-lock mb-3" style="font-size: 2.5rem; color: var(--primary);"></i>
+                        <h5 class="fw-semibold">Secure Purchases</h5>
+                        <p class="text-secondary mb-0">Safe and protected transactions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

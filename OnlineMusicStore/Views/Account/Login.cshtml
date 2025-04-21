@@ -1,0 +1,85 @@
+﻿@model OnlineMusicStore.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-5">
+        <div class="premium-card p-4 mb-4">
+            <h2 class="premium-title text-center mb-4">Sign In to SongCart</h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Email, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-envelope text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control-premium", placeholder = "Enter your email" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="mb-4">
+                    @Html.LabelFor(m => m.Password, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-lock text-light"></i>
+                        </span>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control-premium", placeholder = "Enter your password", id = "passwordInput" })
+                        <button class="btn border-0 bg-transparent text-light" type="button" id="toggle-password">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="mt-4 mb-3">
+                    <button type="submit" class="btn-premium w-100 py-3">
+                        <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                    </button>
+                </div>
+
+                if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="alert mt-3" style="background-color: rgba(220, 53, 69, 0.2); border-color: #dc3545; color: #f07f8a; border-radius: 8px; padding: 12px;">
+                        <i class="fas fa-exclamation-circle me-2"></i> @ViewBag.Error
+                    </div>
+                }
+            }
+
+            <div class="text-center mt-4">
+                <p class="mb-0">
+                    New to SongCart?
+                    <a href="@Url.Action("Register", "Account")" style="color: #bb86fc; text-decoration: none; font-weight: 500;">
+                        Create an account <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Toggle password visibility
+        document.getElementById("toggle-password").addEventListener("click", function () {
+            var passwordField = document.getElementById("passwordInput");
+            var icon = document.getElementById("eyeIcon");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+    </script>
+}

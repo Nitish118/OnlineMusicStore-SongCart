@@ -1,0 +1,141 @@
+﻿@model List<OnlineMusicStore.Models.Song>
+@{
+    ViewBag.Title = "Browse Songs by Genre";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var genres = ViewBag.Genres as List<string>;
+}
+
+<div class="mb-4">
+    <h2 class="premium-title">Browse Songs</h2>
+    <p class="text-secondary mb-4">Discover and purchase your favorite music.</p>
+</div>
+
+<!-- Cart message container -->
+<div id="cart-message" class="alert alert-success text-center" style="display:none; position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 1051; width: auto; padding: 10px 20px; border-radius: 8px; background: var(--success); color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+    <i class="fas fa-check-circle me-2"></i> Added to cart!
+</div>
+
+<!-- Wishlist message container -->
+<div id="wishlist-message" class="alert alert-info text-center" style="display:none; position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 1051; padding: 10px 20px; border-radius: 8px; background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+    <i class="fas fa-heart me-2"></i> Added to wishlist!
+</div>
+
+<!-- Search and Filter Section -->
+<div class="premium-card p-4 mb-4">
+    <div class="row">
+        <div class="col-md-8">
+            <form method="get" action="@Url.Action("BrowseSongsByGenre", "User")">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control-premium" placeholder="Search by title, artist, or genre" value="@Request.QueryString["search"]" />
+                    <button type="submit" class="btn-premium">
+                        <i class="fas fa-search me-2"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control-premium" id="genreFilter">
+                <option value="all">All Genres</option>
+                @if (genres != null)
+                {
+                    foreach (var genre in genres)
+                    {
+                        <option value="@genre">@genre</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+@if (genres != null && genres.Count > 0)
+{
+    foreach (var genre in genres)
+    {
+        <div class="genre-section" data-genre="@genre">
+            <h3 class="premium-title mt-5 mb-4">@genre</h3>
+            <div class="row">
+                @foreach (var song in Model.Where(s => s.Genre == genre))
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="premium-card h-100">
+                            <div style="height: 180px; overflow: hidden; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                                <img src="@(string.IsNullOrEmpty(song.CoverImageUrl) ? "/Content/Images/default-cover.jpg" : song.CoverImageUrl)"
+                                     class="w-100 h-100" style="object-fit: cover;" alt="@song.Title" />
+                            </div>
+                            <div class="p-3">
+                                <h5 class="mb-2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@song.Title</h5>
+                                <p class="mb-3 text-secondary">@song.Artist</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge-premium">₹@song.Price.ToString("N2")</span>
+                                    <div>
+                                        <button class="btn-premium btn-premium-sm add-to-wishlist me-1" data-song-id="@song.SongId">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                        <button class="btn-premium btn-premium-sm add-to-cart" data-song-id="@song.SongId">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="premium-card p-5 text-center mt-4">
+        <i class="fas fa-music mb-4" style="font-size: 4rem; color: var(--text-secondary);"></i>
+        <h3 class="mb-3">No Songs Found</h3>
+        <p class="mb-4">We couldn't find any songs matching your criteria.</p>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Original cart functionality
+            $(".add-to-cart").click(function () {
+                var songId = $(this).data("song-id");
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "User")',
+                    type: 'POST',
+                    data: { songId: songId },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#cart-message").fadeIn().delay(2000).fadeOut();
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred.");
+                    }
+                });
+            });
+
+            // Original wishlist functionality
+            $(".add-to-wishlist").click(function () {
+                var songId = $(this).data("song-id");
+                $.post('@Url.Action("AddToWishlist", "User")', { songId: songId }, function (response) {
+                    if (response.success) {
+                        $("#wishlist-message").fadeIn().delay(2000).fadeOut();
+                    }
+                });
+            });
+
+            // New genre filter functionality
+            $("#genreFilter").change(function() {
+                var selectedGenre = $(this).val();
+
+                if (selectedGenre === "all") {
+                    $(".genre-section").show();
+                } else {
+                    $(".genre-section").hide();
+                    $(".genre-section[data-genre='" + selectedGenre + "']").show();
+                }
+            });
+        });
+    </script>
+}

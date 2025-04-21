@@ -1,0 +1,86 @@
+﻿@model IEnumerable<OnlineMusicStore.Models.Song>
+@{
+    ViewBag.Title = "Browse Songs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var genres = ViewBag.Genres as List<string>;
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="premium-title">Browse Songs</h2>
+        @if (ViewBag.CurrentGenre != null)
+        {
+            <p class="text-secondary">Currently viewing: <span class="text-accent fw-bold">@ViewBag.CurrentGenre</span></p>
+        }
+    </div>
+</div>
+
+@if (genres != null && genres.Any())
+{
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="premium-card p-3">
+                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                    <a href="@Url.Action("BrowseSongs", "Home")" style="text-decoration: none;" class="btn-premium @(ViewBag.CurrentGenre == null ? "active" : "")"
+                       style="@(ViewBag.CurrentGenre == null ? "background: linear-gradient(45deg, var(--accent), var(--primary)); box-shadow: 0 4px 15px rgba(138, 43, 226, 0.5);" : "")">
+                        All Genres
+                    </a>
+                    @foreach (var genre in genres)
+                    {
+                        <a href="@Url.Action("BrowseSongs", "Home", new { genre })" style="text-decoration: none;" class="btn-premium @(ViewBag.CurrentGenre == genre ? "active" : "")"
+                           style="@(ViewBag.CurrentGenre == genre ? "background: linear-gradient(45deg, var(--accent), var(--primary)); box-shadow: 0 4px 15px rgba(138, 43, 226, 0.5);" : "")">
+                            @genre
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var song in Model)
+    {
+        <div class="col">
+            <div class="premium-card h-100 p-0 overflow-hidden">
+                <div class="position-relative">
+                    <img src="@song.CoverImageUrl" alt="@song.Title" class="img-fluid w-100" style="height: 220px; object-fit: cover;" />
+                    <div class="badge-premium position-absolute top-0 end-0 m-3">₹@song.Price</div>
+                </div>
+                <div class="p-3">
+                    <h5 class="fw-bold text-truncate mb-1" title="@song.Title">@song.Title</h5>
+                    <p class="text-secondary mb-3" title="@song.Artist">@song.Artist</p>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form action="@Url.Action("AddToCart", "User")" method="post">
+                            <input type="hidden" name="songId" value="@song.SongId" />
+                            <button type="submit" class="btn-premium w-100">
+                                <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "Account")" class="btn-premium w-100" style="text-decoration: none;">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login to Buy
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="premium-card p-5">
+                <i class="fas fa-music mb-3" style="font-size: 3rem; color: var(--accent);"></i>
+                <h4>No songs found</h4>
+                <p class="text-secondary">Try selecting a different genre or check back later for new additions.</p>
+            </div>
+        </div>
+    </div>
+}

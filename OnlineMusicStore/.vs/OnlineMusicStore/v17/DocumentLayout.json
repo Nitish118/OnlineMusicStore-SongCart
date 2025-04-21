@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\OnlineMusicStore\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{590F7E21-A84D-419A-961A-6DF9802649E6}|OnlineMusicStore.csproj|c:\\onlinemusicstore\\views\\user\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{590F7E21-A84D-419A-961A-6DF9802649E6}|OnlineMusicStore.csproj|solutionrelative:views\\user\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{590F7E21-A84D-419A-961A-6DF9802649E6}|OnlineMusicStore.csproj|c:\\onlinemusicstore\\views\\admin\\manageorders.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{590F7E21-A84D-419A-961A-6DF9802649E6}|OnlineMusicStore.csproj|solutionrelative:views\\admin\\manageorders.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ManageOrders.cshtml",
+              "DocumentMoniker": "C:\\OnlineMusicStore\\Views\\Admin\\ManageOrders.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ManageOrders.cshtml",
+              "ToolTip": "C:\\OnlineMusicStore\\Views\\Admin\\ManageOrders.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ManageOrders.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-21T05:12:30.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Checkout.cshtml",
+              "DocumentMoniker": "C:\\OnlineMusicStore\\Views\\User\\Checkout.cshtml",
+              "RelativeDocumentMoniker": "Views\\User\\Checkout.cshtml",
+              "ToolTip": "C:\\OnlineMusicStore\\Views\\User\\Checkout.cshtml",
+              "RelativeToolTip": "Views\\User\\Checkout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-21T05:07:51.993Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

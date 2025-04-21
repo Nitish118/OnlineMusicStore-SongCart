@@ -1,0 +1,98 @@
+﻿@model List<OnlineMusicStore.Models.OrderHistoryViewModel>
+@{
+    ViewBag.Title = "My Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mb-4">
+    <h2 class="premium-title">Order History</h2>
+    <p class="text-secondary mb-4">View all your previous music purchases and order details.</p>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="premium-table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Items</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>#@order.OrderId</td>
+                        <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                        <td>₹@order.TotalAmount.ToString("N2")</td>
+                        <td>@order.Songs.Count song(s)</td>
+                        <td>
+                            <button class="btn-premium btn-premium-sm" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#orderDetails@(order.OrderId)" aria-expanded="false">
+                                <i class="fas fa-chevron-down me-1"></i> Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="collapse" id="orderDetails@(order.OrderId)">
+                        <td colspan="5" class="p-0">
+                            <div class="p-3" style="background-color: rgba(255, 255, 255, 0.03);">
+                                <div class="row">
+                                    @foreach (var item in order.Songs)
+                                    {
+                                        <div class="col-md-6 mb-3">
+                                            <div class="premium-card p-3 h-100">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h5 class="mb-1">@item.Title</h5>
+                                                        <p class="mb-0 text-secondary">@item.Artist</p>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <p class="mb-0 text-success">₹@item.Price.ToString("N2")</p>
+                                                        <small class="text-secondary">Qty: @item.Quantity</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="premium-card p-5 text-center">
+        <i class="fas fa-receipt mb-4" style="font-size: 4rem; color: var(--text-secondary);"></i>
+        <h3 class="mb-3">No Orders Yet</h3>
+        <p class="mb-4">You haven't placed any orders yet. Explore our music collection and find your next favorite track!</p>
+        <a href="@Url.Action("BrowseSongsByGenre", "User")" class="btn-premium">
+            <i class="fas fa-music me-2"></i> Browse Songs
+        </a>
+    </div>
+}
+
+
+<style>
+    .table tr:hover {
+        background-color: rgba(40, 40, 40, 0.5) !important;
+    }
+
+    .table td,
+    .table th {
+        color: #b0b0b0 !important;
+    }
+
+    .table tbody tr:hover td {
+        color: #ffffff !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        transition: none;
+    }
+</style>

@@ -1,0 +1,79 @@
+﻿@model OnlineMusicStore.Models.Feedback
+@{
+    ViewBag.Title = "Submit Feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="premium-title">Submit Feedback</h2>
+        <p class="text-secondary mb-4">We value your opinion! Let us know what you think about SongCart.</p>
+    </div>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success mb-4" style="background-color: var(--success); color: var(--text-primary); border: none; border-radius: 8px;">
+        <i class="fas fa-check-circle me-2"></i> @ViewBag.Message
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="premium-card p-4 mb-4">
+            @using (Html.BeginForm("SubmitFeedback", "User", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="mb-4">
+                    <label for="Message" class="form-label fw-semibold mb-2">Your Feedback</label>
+                    <div class="position-relative">
+                        @Html.TextAreaFor(m => m.Message, new
+                        {
+                            @class = "form-control-premium w-100",
+                            rows = 6,
+                            placeholder = "Share your thoughts, suggestions, or experience with SongCart...",
+                            style = "resize: none; min-height: 150px; border-radius: 8px; padding: 15px; font-size: 1rem; line-height: 1.5; box-shadow: 0 4px 12px rgba(0,0,0,0.1) inset;"
+                        })
+                        @Html.ValidationMessageFor(m => m.Message, "", new { @class = "text-danger mt-2 d-block" })
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn-premium" style="min-width: 160px; padding: 10px 20px;">
+                        <i class="far fa-paper-plane me-2"></i> Submit Feedback
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="premium-card p-4">
+            <h4 class="mb-4 fw-semibold">Why Your Feedback Matters</h4>
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <div class="text-center h-100 p-3" style="background-color: rgba(255,255,255,0.03); border-radius: 10px;">
+                        <i class="fas fa-lightbulb mb-3" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h5 class="fw-semibold">Improvements</h5>
+                        <p class="text-secondary mb-0">Your feedback helps us improve our service.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center h-100 p-3" style="background-color: rgba(255,255,255,0.03); border-radius: 10px;">
+                        <i class="fas fa-music mb-3" style="font-size: 2.5rem; color: var(--secondary);"></i>
+                        <h5 class="fw-semibold">Better Selection</h5>
+                        <p class="text-secondary mb-0">Guide our music catalog expansion.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center h-100 p-3" style="background-color: rgba(255,255,255,0.03); border-radius: 10px;">
+                        <i class="fas fa-users mb-3" style="font-size: 2.5rem; color: var(--primary);"></i>
+                        <h5 class="fw-semibold">User Experience</h5>
+                        <p class="text-secondary mb-0">Help us create the best platform for music lovers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

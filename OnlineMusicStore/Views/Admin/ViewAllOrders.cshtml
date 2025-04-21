@@ -1,0 +1,67 @@
+﻿@model List<OnlineMusicStore.Models.Order>
+@{
+    ViewBag.Title = "All Orders";
+}
+
+<h2>All Orders</h2>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Songs Purchased</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int count = 1;
+            foreach (var order in Model)
+            {
+                <tr>
+                    <td>@count</td>
+                    <td>@order.User.Username</td>
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>₹@order.TotalAmount</td>
+                    <td>
+                        <ul>
+                            @foreach (var detail in order.OrderDetails)
+                            {
+                                <li>
+                                    <strong>@detail.Song.Title</strong> by @detail.Song.Artist (₹@detail.UnitPrice)
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                count++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No orders available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .table tr:hover {
+        background-color: rgba(40, 40, 40, 0.5) !important;
+    }
+
+    .table td,
+    .table th {
+        color: #b0b0b0 !important;
+    }
+
+    .table tbody tr:hover td {
+        color: #ffffff !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        transition: none;
+    }
+</style>

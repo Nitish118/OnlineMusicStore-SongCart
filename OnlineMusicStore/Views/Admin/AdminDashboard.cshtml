@@ -1,0 +1,257 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    var recentOrders = ViewBag.RecentOrders as List<OnlineMusicStore.Models.Order>;
+    var topSongs = ViewBag.TopSongs as List<dynamic>;
+}
+
+<div class="dashboard-header">
+    <h2 class="premium-title mb-4">Admin Dashboard</h2>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="premium-card h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <i class="fas fa-users fa-3x mb-3" style="color: var(--accent);"></i>
+                <h5 class="text-center">Total Users</h5>
+                <p class="fs-2 fw-bold mt-2 mb-0">@ViewBag.TotalUsers</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="premium-card h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <i class="fas fa-music fa-3x mb-3" style="color: var(--secondary);"></i>
+                <h5 class="text-center">Total Songs</h5>
+                <p class="fs-2 fw-bold mt-2 mb-0">@ViewBag.TotalSongs</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="premium-card h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <i class="fas fa-shopping-cart fa-3x mb-3" style="color: var(--success);"></i>
+                <h5 class="text-center">Total Orders</h5>
+                <p class="fs-2 fw-bold mt-2 mb-0">@ViewBag.TotalOrders</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="premium-card h-100">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                <i class="fas fa-comments fa-3x mb-3" style="color: var(--warning);"></i>
+                <h5 class="text-center">Pending Feedback</h5>
+                <p class="fs-2 fw-bold mt-2 mb-0">@ViewBag.PendingFeedback</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-8">
+        <div class="premium-card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-chart-bar me-2" style="color: var(--primary);"></i>Top 5 Most Purchased Songs</h5>
+                </div>
+                @if (topSongs != null && topSongs.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="premium-table table table-hover w-100">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" width="5%">#</th>
+                                    <th>Song Title</th>
+                                    <th>Artist</th>
+                                    <th class="text-center">Times Purchased</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                    foreach (var item in topSongs)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@count</td>
+                                            <td>@item.Song.Title</td>
+                                            <td>@item.Song.Artist</td>
+                                            <td class="text-center">
+                                                <span class="badge-premium">@item.TotalPurchased</span>
+                                            </td>
+                                        </tr>
+                                        count++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    // Dummy data fallback
+                    var dummyTopSongs = new List<dynamic>
+        {
+        new { Song = new { Title = "Dreamscape", Artist = "Luna Waves" }, TotalPurchased = 42 },
+        new { Song = new { Title = "Electric Skies", Artist = "Nova Pulse" }, TotalPurchased = 37 },
+        new { Song = new { Title = "Midnight Drive", Artist = "Echo Noir" }, TotalPurchased = 29 },
+        new { Song = new { Title = "Neon Horizon", Artist = "Skybound" }, TotalPurchased = 22 },
+        new { Song = new { Title = "Celestial Nights", Artist = "Stellar Sounds" }, TotalPurchased = 18 }
+    };
+            <div class="table-responsive">
+                <table class="premium-table table table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="5%">#</th>
+                            <th>Song Title</th>
+                            <th>Artist</th>
+                            <th class="text-center">Times Purchased</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int count = 1;
+                            foreach (var item in dummyTopSongs)
+                            {
+                                <tr>
+                                    <td class="text-center">@count</td>
+                                    <td>@item.Song.Title</td>
+                                    <td>@item.Song.Artist</td>
+                                    <td class="text-center">
+                                        <span class="badge-premium">@item.TotalPurchased</span>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="premium-card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-money-bill-wave me-2" style="color: var(--success);"></i>Revenue</h5>
+                </div>
+                <div class="d-flex flex-column align-items-center justify-content-center py-4">
+                    <div class="display-5 fw-bold mb-2" style="background: linear-gradient(45deg, var(--success), #8df3e6); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                        ₹@ViewBag.TotalRevenue
+                    </div>
+                    <p class="text-center text-secondary">Total Revenue Generated</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="premium-card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="card-title mb-0"><i class="fas fa-shopping-bag me-2" style="color: var(--primary);"></i>Recent Orders</h5>
+            <a href="@Url.Action("ManageOrders", "Admin")" class="btn btn-premium btn-sm">
+                <i class="fas fa-eye me-1"></i>View All
+            </a>
+        </div>
+
+        @if (recentOrders != null && recentOrders.Any())
+        {
+            <div class="table-responsive">
+                <table class="premium-table table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Songs</th>
+                            <th>User</th>
+                            <th>Order Date</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in recentOrders)
+                        {
+                            var songTitles = string.Join(", ", order.OrderDetails.Select(od => od.Song.Title));
+                            <tr>
+                                <td>#@order.Id</td>
+                                <td>
+                                    <span class="text-truncate d-inline-block" style="max-width: 200px;" title="@songTitles">
+                                        @songTitles
+                                    </span>
+                                </td>
+                                <td>@order.User.Username</td>
+                                <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                                <td>₹@order.TotalAmount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-4">
+                <i class="fas fa-shopping-cart fa-3x mb-3" style="color: var(--text-secondary);"></i>
+                <p>No recent orders found.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="premium-card h-100">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-users fa-3x mb-3" style="color: var(--accent);"></i>
+                <h5 class="mb-3">User Management</h5>
+                <p class="text-secondary mb-3">View, edit, or delete user accounts.</p>
+                <a href="@Url.Action("ManageUsers", "Admin")" class="btn btn-premium">
+                    <i class="fas fa-user-cog me-2"></i>Manage Users
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="premium-card h-100">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-music fa-3x mb-3" style="color: var(--secondary);"></i>
+                <h5 class="mb-3">Song Management</h5>
+                <p class="text-secondary mb-3">Add, edit or remove songs from catalog.</p>
+                <a href="@Url.Action("ManageSongs", "Admin")" class="btn btn-premium">
+                    <i class="fas fa-compact-disc me-2"></i>Manage Songs
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="premium-card h-100">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-comment-alt fa-3x mb-3" style="color: var(--warning);"></i>
+                <h5 class="mb-3">Customer Feedback</h5>
+                <p class="text-secondary mb-3">Review and respond to customer feedback.</p>
+                <a href="@Url.Action("ManageFeedback", "Admin")" class="btn btn-premium">
+                    <i class="fas fa-comments me-2"></i>View Feedback
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .premium-table.table-hover tbody tr:hover td {
+        color: #ffffff !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        transition: none;
+    }
+</style>
+
+

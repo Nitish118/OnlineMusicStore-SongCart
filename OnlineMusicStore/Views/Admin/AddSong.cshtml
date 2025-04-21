@@ -1,0 +1,142 @@
+﻿@model OnlineMusicStore.Models.Song
+@{
+    ViewBag.Title = "Add New Song";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-4 mb-4 text-white">Add New Song</h2>
+
+<div class="card" style="background-color: rgba(30, 30, 30, 0.6); border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05);">
+    <div class="card-body p-4">
+        @using (Html.BeginForm("AddSong", "Admin", FormMethod.Post, new { @class = "needs-validation", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-4" })
+
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <label for="Title" class="form-label">Title</label>
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", style = "background-color: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; padding: 10px 15px;", placeholder = "Enter song title" })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="Artist" class="form-label">Artist</label>
+                    @Html.TextBoxFor(model => model.Artist, new { @class = "form-control", style = "background-color: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; padding: 10px 15px;", placeholder = "Enter artist name" })
+                    @Html.ValidationMessageFor(model => model.Artist, "", new { @class = "text-danger mt-1" })
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <label for="Genre" class="form-label">Genre</label>
+                    <select name="Genre" class="form-select" style="background-color: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; padding: 10px 15px;">
+                        <option value="">Select Genre</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Hip Hop">Hip Hop</option>
+                        <option value="R&B">R&B</option>
+                        <option value="Country">Country</option>
+                        <option value="Electronic">Electronic</option>
+                        <option value="Jazz">Jazz</option>
+                        <option value="Classical">Classical</option>
+                        <option value="Folk">Folk</option>
+                        <option value="Alternative">Alternative</option>
+                        <option value="Indie">Indie</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="Price" class="form-label">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #1e1e1e; color: white; border: 1px solid rgba(255, 255, 255, 0.1);">₹</span>
+                        @Html.TextBoxFor(model => model.Price, new { @class = "form-control", style = "background-color: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 0 8px 8px 0; padding: 10px 15px;", placeholder = "0.00" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="Duration" class="form-label">Duration</label>
+                    @Html.TextBoxFor(model => model.Duration, new { @class = "form-control", style = "background-color: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; padding: 10px 15px;", placeholder = "mm:ss" })
+                    @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger mt-1" })
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="CoverImageUrl" class="form-label">Cover Image URL</label>
+                @Html.TextBoxFor(model => model.CoverImageUrl, new { @class = "form-control", style = "background-color: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; padding: 10px 15px;", placeholder = "https://example.com/image.jpg" })
+                <small class="text-muted d-block mt-1">Enter the URL for the song's cover art. Recommended size: 300x300 pixels.</small>
+                @Html.ValidationMessageFor(model => model.CoverImageUrl, "", new { @class = "text-danger mt-1" })
+
+                <div id="imagePreviewContainer" class="mt-3" style="display: none;">
+                    <img id="imagePreview" class="rounded" style="max-width: 150px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" />
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="@Url.Action("ManageSongs", "Admin")" class="btn" style="background-color: rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; padding: 10px 20px; transition: all 0.2s;">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Songs
+                </a>
+                <button type="submit" class="btn" style="background: linear-gradient(45deg, #8a2be2, #5e17eb); color: white; border-radius: 8px; padding: 10px 25px; font-weight: 500; box-shadow: 0 0 15px rgba(138, 43, 226, 0.5); transition: all 0.2s;">
+                    <i class="fas fa-plus-circle me-2"></i>Create Song
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('input[name="CoverImageUrl"]').on('input', function () {
+                const imageUrl = $(this).val();
+                if (imageUrl) {
+                    $('#imagePreview').attr('src', imageUrl);
+                    $('#imagePreviewContainer').show();
+                } else {
+                    $('#imagePreviewContainer').hide();
+                }
+            });
+
+            $('input, select').focus(function () {
+                $(this).css('box-shadow', '0 0 0 3px rgba(138, 43, 226, 0.25)');
+                $(this).css('border-color', '#8a2be2');
+            }).blur(function () {
+                $(this).css('box-shadow', 'none');
+                $(this).css('border-color', 'rgba(255, 255, 255, 0.1)');
+            });
+
+            $('.btn').hover(function () {
+                $(this).css('transform', 'translateY(-2px)');
+                $(this).css('box-shadow', '0 5px 15px rgba(255, 255, 255, 0.2)');
+            }, function () {
+                $(this).css('transform', 'translateY(0)');
+                $(this).css('box-shadow', $(this).data('original-shadow') || '0 0 15px rgba(138, 43, 226, 0.5)');
+            });
+        });
+    </script>
+}
+
+<style>
+    .form-label {
+        margin-bottom: 8px;
+        color: #e0e0e0;
+        font-weight: 500;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        background-color: #2a2a2a;
+        border-color: #8a2be2;
+        box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.25);
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2) !important;
+    }
+</style>

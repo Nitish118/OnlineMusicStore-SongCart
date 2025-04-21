@@ -1,0 +1,101 @@
+﻿@model OnlineMusicStore.Models.User
+@{
+    ViewBag.Title = "User Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mb-4">
+    <h2 class="premium-title">Your Profile</h2>
+    <p class="text-secondary mb-4">Manage your personal information and preferences.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="premium-card text-center p-4">
+            <div class="mb-3">
+                <i class="fas fa-user-circle" style="font-size: 6rem; color: var(--accent);"></i>
+            </div>
+            <h4 class="mb-3">@Model.Username</h4>
+            <p class="mb-4 text-secondary">@Model.Email</p>
+            <a href="@Url.Action("EditProfile", "User")" class="btn-premium w-100" style="text-decoration: none;">
+                <i class="fas fa-user-edit me-2"></i> Edit Profile
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="premium-card p-4">
+            <h4 class="mb-4">Account Details</h4>
+
+            <div class="row mb-3">
+                <div class="col-md-4 text-secondary">
+                    <i class="fas fa-user me-2"></i> Username
+                </div>
+                <div class="col-md-8">
+                    @Model.Username
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 text-secondary">
+                    <i class="fas fa-envelope me-2"></i> Email
+                </div>
+                <div class="col-md-8">
+                    @Model.Email
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 text-secondary">
+                    <i class="fas fa-key me-2"></i> Password
+                </div>
+                <div class="col-md-8">
+                    ●●●●●●●● <span class="badge badge-secondary" style="background-color: var(--dark-input);">Hidden</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 text-secondary">
+                    <i class="fas fa-map-marker-alt me-2"></i> Address
+                </div>
+                <div class="col-md-8">
+                    @(string.IsNullOrEmpty(Model.Address) ? "Not provided" : Model.Address)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-secondary">
+                    <i class="fas fa-credit-card me-2"></i> Payment Method
+                </div>
+                <div class="col-md-8">
+                    @Model.PaymentMethod
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+    <div id="profileToast" class="toast" style="background-color: var(--success); color: white;" data-delay="3000">
+        <div class="toast-header" style="background-color: rgba(3, 218, 198, 0.8); color: white;">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <i class="fas fa-check me-2"></i> Profile updated successfully!
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var showToast = '@TempData["ProfileUpdated"]' === 'True';
+            if (showToast) {
+                $('#profileToast').toast('show');
+            }
+        });
+    </script>
+}

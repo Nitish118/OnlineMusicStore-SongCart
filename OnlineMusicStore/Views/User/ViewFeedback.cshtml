@@ -1,0 +1,55 @@
+﻿@model List<OnlineMusicStore.Models.Feedback>
+
+<h2>Your Feedback</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @*<th>#</th>*@
+            <th>Message</th>
+            <th>Submitted On</th>
+            <th>Admin Reply</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int count = 1;
+            foreach (var feedback in Model)
+            {
+                <tr>
+                    @*<td>@count</td>*@
+                    <td>@feedback.Message</td>
+                    <td>@feedback.SubmittedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@if (feedback.ReplyMessage != null) { 
+                    @feedback.ReplyMessage
+                    } else { <p>No Reply yet</p>}</td>
+                </tr>
+                count++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">No feedback available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .table tr:hover {
+        background-color: rgba(40, 40, 40, 0.5) !important;
+    }
+
+    .table td,
+    .table th {
+        color: #b0b0b0 !important;
+    }
+
+    .table tbody tr:hover td {
+        color: #ffffff !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        transition: none;
+    }
+</style>

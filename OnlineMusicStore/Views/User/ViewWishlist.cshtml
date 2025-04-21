@@ -1,0 +1,114 @@
+﻿@model IEnumerable<OnlineMusicStore.Models.WishlistItem>
+@{
+    ViewBag.Title = "Wishlist";
+}
+
+<!-- Message containers -->
+<div id="cart-message" class="alert alert-success text-center" style="display:none; position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 1051; padding: 10px 20px;">
+    Added to cart!
+</div>
+<div id="wishlist-message" class="alert alert-info text-center" style="display:none; position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1051; padding: 10px 20px;">
+    Added to wishlist!
+</div>
+<div id="remove-message" class="alert alert-warning text-center" style="display:none; position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1051; padding: 10px 20px;">
+    Removed from wishlist!
+</div>
+
+<h2 class="premium-title mb-4">🎵 Your Wishlist</h2>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="premium-card h-100">
+                    <img src="@item.CoverImageUrl" class="card-img-top" alt="@item.Title" style="height: 180px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;" />
+                    <div class="card-body p-3">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text text-secondary mb-2">@item.Artist</p>
+                        <p class="card-text mb-3">
+                            <span class="badge-premium">₹@item.Price</span>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-premium add-to-cart" data-song-id="@item.SongId">
+                                <i class="fas fa-shopping-cart me-1"></i> Buy
+                            </button>
+                            <button class="btn btn-danger remove-from-wishlist" data-wishlist-id="@item.Id" style="border-radius: 8px;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mt-5">
+        <h4 class="premium-title">🎧 Browse by Genre</h4>
+        <div class="row">
+            @{
+                // Since WishlistItem doesn't have Genre, we don't have a way to show genres here
+                // You could either fetch genres from the database or remove this section
+                var genres = new[] { "Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic" };
+            }
+            @foreach (var genre in genres)
+            {
+                <div class="col-md-2 mb-3">
+                    <a href="@Url.Action("BrowseSongsByGenre", "User", new { search = genre })" class="text-decoration-none">
+                        <div class="premium-card h-100 d-flex align-items-center justify-content-center p-3" style="min-height: 80px;">
+                            <h6 class="m-0 text-center">@genre</h6>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="premium-card p-4 text-center">
+        <i class="far fa-heart fa-3x mb-3" style="color: var(--secondary);"></i>
+        <h4>Your wishlist is empty</h4>
+        <p class="text-secondary mb-4">Add some songs to your wishlist to see them here.</p>
+        <a href="@Url.Action("UserDashboard", "User")" class="btn btn-premium">
+            <i class="fas fa-music me-2"></i> Browse Music
+        </a>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function () {
+                var songId = $(this).data("song-id");
+
+                $.post('@Url.Action("AddToCart", "User")', { songId: songId }, function (response) {
+                    if (response.success) {
+                        $("#cart-message").fadeIn().delay(2000).fadeOut();
+                    }
+                });
+            });
+
+            $(".remove-from-wishlist").click(function () {
+                var wishlistId = $(this).data("wishlist-id");
+                var cardElement = $(this).closest('.col-md-3');
+
+                $.post('@Url.Action("RemoveFromWishlist", "User")', { id: wishlistId }, function (response) {
+                    if (response) {
+                        $("#remove-message").fadeIn().delay(2000).fadeOut();
+                        cardElement.fadeOut(function() {
+                            $(this).remove();
+                            if ($('.col-md-3').length === 0) {
+                                location.reload(); // Reload the page if no items left
+                            }
+                        });
+                    }
+                }).fail(function() {
+                    // If the AJAX call fails, redirect to refresh the page anyway
+                    window.location.href = '@Url.Action("ViewWishlist", "User")';
+                });
+            });
+        });
+    </script>
+}

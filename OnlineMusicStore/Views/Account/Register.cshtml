@@ -1,0 +1,179 @@
+﻿@model OnlineMusicStore.Models.User
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="premium-card p-4 mb-4">
+            <h2 class="premium-title text-center mb-4">Create Your Account</h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Username, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-user text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control-premium", placeholder = "Choose a username" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Email, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-envelope text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control-premium", placeholder = "Enter your email address" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Password, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-lock text-light"></i>
+                        </span>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control-premium", placeholder = "Create a strong password", id = "passwordInput" })
+                        <button class="btn border-0 bg-transparent text-light" type="button" onclick="togglePassword()">
+                            <i id="eyeIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Address, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-map-marker-alt text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control-premium", placeholder = "Enter your address" })
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-light mb-3">Payment Method</label>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                            <input type="radio" id="creditOption" name="PaymentMethod" value="CreditCard" class="form-check-input" onclick="showPaymentInput()" />
+                            <label class="form-check-label text-light" for="creditOption">
+                                <i class="far fa-credit-card me-1"></i> Credit Card
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" id="debitOption" name="PaymentMethod" value="DebitCard" class="form-check-input" onclick="showPaymentInput()" />
+                            <label class="form-check-label text-light" for="debitOption">
+                                <i class="fas fa-credit-card me-1"></i> Debit Card
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" id="upiOption" name="PaymentMethod" value="UPI" class="form-check-input" onclick="showPaymentInput()" />
+                            <label class="form-check-label text-light" for="upiOption">
+                                <i class="fas fa-mobile-alt me-1"></i> UPI
+                            </label>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.PaymentMethod, "", new { @class = "text-danger mt-1" })
+                </div>
+
+                <div id="creditField" class="mb-3" style="display:none;">
+                    @Html.LabelFor(m => m.CreditCard, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="far fa-credit-card text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.CreditCard, new { @class = "form-control-premium", placeholder = "xxxx-xxxx-xxxx-1234" })
+                    </div>
+                </div>
+
+                <div id="debitField" class="mb-3" style="display:none;">
+                    @Html.LabelFor(m => m.DebitCard, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-credit-card text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.DebitCard, new { @class = "form-control-premium", placeholder = "xxxx-xxxx-xxxx-5678" })
+                    </div>
+                </div>
+
+                <div id="upiField" class="mb-3" style="display:none;">
+                    @Html.LabelFor(m => m.UPI, new { @class = "form-label text-light mb-2" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-mobile-alt text-light"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.UPI, new { @class = "form-control-premium", placeholder = "yourname@upi" })
+                    </div>
+                </div>
+
+                <div class="mt-4 mb-3">
+                    <button type="submit" class="btn-premium w-100 py-3" onclick="showSuccess()">
+                        <i class="fas fa-user-plus me-2"></i> Create Account
+                    </button>
+                </div>
+            }
+
+            <div id="successAlert" class="alert alert-success text-center mb-3" style="display: none; background-color: rgba(25, 135, 84, 0.2); border-color: #198754; color: #75b798;">
+                <i class="fas fa-check-circle me-2"></i> Registration Successful!
+            </div>
+
+            <div class="text-center mt-3">
+                <p class="mb-0">
+                    Already have an account?
+                    <a href="@Url.Action("Login", "Account")" style="color: #bb86fc; text-decoration: none; font-weight: 500;">
+                        Sign In <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showPaymentInput() {
+            document.getElementById("creditField").style.display = "none";
+            document.getElementById("debitField").style.display = "none";
+            document.getElementById("upiField").style.display = "none";
+
+            if (document.getElementById("creditOption").checked) {
+                document.getElementById("creditField").style.display = "block";
+            } else if (document.getElementById("debitOption").checked) {
+                document.getElementById("debitField").style.display = "block";
+            } else if (document.getElementById("upiOption").checked) {
+                document.getElementById("upiField").style.display = "block";
+            }
+        }
+
+        function togglePassword() {
+            const input = document.getElementById("passwordInput");
+            const icon = document.getElementById("eyeIcon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        function showSuccess() {
+            setTimeout(() => {
+                document.getElementById("successAlert").style.display = "block";
+            }, 300);
+        }
+
+        window.onload = showPaymentInput;
+    </script>
+}

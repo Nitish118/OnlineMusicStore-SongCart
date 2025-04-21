@@ -1,0 +1,54 @@
+﻿@model List<OnlineMusicStore.Models.Order>
+
+@{
+    ViewBag.Title = "Manage Orders";
+}
+
+<h2>Manage Orders</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Songs</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.User.Username</td>
+                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                <td>@order.TotalAmount</td>
+                <td>
+                    @foreach (var detail in order.OrderDetails)
+                    {
+                        <span>@detail.Song.Title</span><br />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .table tr:hover {
+        background-color: rgba(40, 40, 40, 0.5) !important;
+    }
+
+    .table td,
+    .table th {
+        color: #b0b0b0 !important;
+    }
+
+    .table tbody tr:hover td {
+        color: #ffffff !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        transition: none;
+    }
+
+</style>

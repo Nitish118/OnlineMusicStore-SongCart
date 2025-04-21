@@ -1,0 +1,189 @@
+﻿@model IEnumerable<OnlineMusicStore.Models.Song>
+@{
+    ViewBag.Title = "Browse Songs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .song-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 30px;
+        padding: 40px;
+    }
+
+    .song-card {
+        background-color: #1f1f1f;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+
+    .song-cover {
+        width: 100%;
+        border-radius: 12px;
+        height: 200px;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
+
+    .song-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .song-artist {
+        font-size: 1rem;
+        color: #ccc;
+        margin-bottom: 10px;
+    }
+
+    .song-price {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .btn-buy {
+        background: linear-gradient(135deg, #00b894, #00cec9);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+
+        .btn-buy:hover {
+            background: linear-gradient(135deg, #00cec9, #00b894);
+        }
+
+    .cart-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #00b894;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        display: none;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .cart-icon {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #00b894;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50%;
+        font-weight: bold;
+        z-index: 999;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .success-animation {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #00b894;
+        font-size: 24px;
+        display: none;
+    }
+</style>
+
+<h2 class="text-center">Available Songs</h2>
+
+<!-- Cart Icon with Counter -->
+<a href="@Url.Action("ViewCart", "User")" class="cart-icon">
+    <span id="cart-count">0</span> 🛒
+</a>
+
+<!-- Add to Cart Success Notification -->
+<div id="cart-notification" class="cart-notification">
+    Item added to cart!
+</div>
+
+<div class="song-grid">
+    @foreach (var song in Model)
+    {
+        <div class="song-card" id="song-@song.SongId">
+            <img src="@song.CoverImageUrl" alt="@song.Title" class="song-cover" />
+            <div class="song-title">@song.Title</div>
+            <div class="song-artist">@song.Artist</div>
+            <div class="song-price">₹@song.Price</div>
+            <button class="btn-buy add-to-cart" data-song-id="@song.SongId">Add to Cart</button>
+            <div class="success-animation">✓</div>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Update cart count on page load
+            updateCartCount();
+
+            // Add to cart click event
+            $('.add-to-cart').click(function () {
+                var button = $(this);
+                var songId = button.data('song-id');
+                var songCard = $('#song-' + songId);
+
+                // Disable button temporarily
+                button.prop('disabled', true).addClass('btn-disabled').text('Adding...');
+
+                // AJAX call to add item to cart
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "User")',
+                    type: 'POST',
+                    data: { songId: songId },
+                    success: function (result) {
+                        if (result.success) {
+                            // Show success animation
+                            songCard.find('.success-animation').fadeIn(200).delay(1000).fadeOut(200);
+
+                            // Show notification
+                            $('#cart-notification').fadeIn(300).delay(2000).fadeOut(300);
+
+                            // Update cart count
+                            $('#cart-count').text(result.cartCount);
+
+                            // Re-enable button after delay
+                            setTimeout(function() {
+                                button.prop('disabled', false).removeClass('btn-disabled').text('Add to Cart');
+                            }, 1000);
+                        } else {
+                            alert('Error adding to cart: ' + result.message);
+                            button.prop('disabled', false).removeClass('btn-disabled').text('Add to Cart');
+                        }
+                    },
+                    error: function () {
+                        alert('Error adding to cart. Please try again.');
+                        button.prop('disabled', false).removeClass('btn-disabled').text('Add to Cart');
+                    }
+                });
+            });
+
+            // Function to update cart count from session
+            function updateCartCount() {
+                $.ajax({
+                    url: '@Url.Action("GetCartCount", "User")',
+                    type: 'GET',
+                    success: function (count) {
+                        $('#cart-count').text(count);
+                    }
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,70 @@
+﻿@model List<OnlineMusicStore.Models.ContactMessage>
+@{
+    ViewBag.Title = "Contact Messages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-4 mb-4 text-white">Contact Messages</h2>
+
+<div class="card" style="background-color: rgba(30, 30, 30, 0.6); border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05);">
+    <div class="card-body px-0 pb-0">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <i class="far fa-envelope-open fa-4x mb-3 text-secondary"></i>
+                <h4 class="text-secondary">No messages received yet</h4>
+                <p class="text-secondary">When users submit contact forms, they will appear here.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table mb-0" style="color: #e0e0e0;">
+                    <thead>
+                        <tr style="background-color: rgba(20, 20, 20, 0.8);">
+                            <th class="ps-4">Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th class="pe-4">Date Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var msg in Model)
+                        {
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                                <td class="ps-4">@msg.Name</td>
+                                <td>
+                                    <a href="mailto:@msg.Email" style="color: #bb86fc; text-decoration: none;">@msg.Email</a>
+                                </td>
+                                <td>@msg.Subject</td>
+                                <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    @msg.Message
+                                </td>
+                                <td class="pe-4">@msg.SubmittedAt.ToString("dd MMM yyyy, HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .table tr:hover {
+        background-color: rgba(40, 40, 40, 0.5) !important;
+    }
+    .table td,
+    .table th {
+        color: #b0b0b0 !important;
+    }
+
+    .table tbody tr:hover td {
+        color: #ffffff !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        transition: none;
+    }
+
+
+</style>
